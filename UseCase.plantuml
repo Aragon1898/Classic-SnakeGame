@@ -1,0 +1,23 @@
+@startuml
+left to right direction
+actor "Игрок" as Player
+
+rectangle "Игра Змейка" {
+  usecase "Запустить игру" as UC1
+  usecase "Управлять змейкой (клавиши стрелок)" as UC2
+  usecase "Собрать еду" as UC3
+  usecase "Увеличить длину змейки" as UC4
+  usecase "Обнаружить столкновение" as UC5
+  usecase "Завершить игру" as UC6
+  usecase "Показать итоговый счет" as UC7
+  
+  Player --> UC1
+  Player --> UC2
+  UC3 --> UC4 : вызывает
+  UC5 --> UC6 : вызывает
+  UC6 --> UC7 : включает
+  UC2 --> UC3 : приводит к
+  UC2 --> UC5 : может вызвать
+}
+
+@enduml

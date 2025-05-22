@@ -1,0 +1,58 @@
+@startuml
+namespace Zmeika {
+
+    enum Direction {
+        Up
+        Down
+        Right
+        Left
+    }
+
+    class Pixel {
+        - const char PixelChar
+        + int X { get }
+        + int Y { get }
+        + ConsoleColor Color { get }
+        + int PixelSize { get }
+        + void Draw()
+        + void Clear()
+    }
+
+    class Snake {
+        - ConsoleColor _headColor
+        - ConsoleColor _bodyColor
+        + Pixel Head { get; private set; }
+        + Queue<Pixel>
+        + Snake(int initialX, int initialY, ConsoleColor headColor, ConsoleColor bodyColor, int bodyLength = 3)
+        + void Move(Direction direction, bool eat = false)
+        + void Draw()
+        + void Clear()
+    }
+
+    class Program {
+        - const int MapWidth
+        - const int MapHeight
+        - const int ScreenWidth
+        - const int ScreenHeight
+        - const int FrameMilliseconds
+        - const ConsoleColor BorderColor
+        - const ConsoleColor FoodColor
+        - const ConsoleColor BodyColor
+        - const ConsoleColor HeadColor
+        - static Random Random
+        + static void Main()
+        - static void StartGame()
+        - static void DrawBoard()
+        - static Pixel GenFood(Snake snake)
+        - static Direction ReadMovement(Direction currentDirection)
+    }
+
+    Program --> Pixel : uses
+    Program --> Snake : uses
+    Program --> Direction : uses
+
+    Snake --> Pixel : Head
+    Snake --> Pixel : Body elements
+    Snake --> Direction : uses
+}
+@enduml

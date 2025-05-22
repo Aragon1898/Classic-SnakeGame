@@ -1,0 +1,56 @@
+@startuml
+actor Player
+participant Program
+participant Snake
+participant Pixel
+participant Direction
+participant Console
+participant Random
+
+== Запуск игры ==
+Player -> Program : Main()
+Program -> Console : Настройка окна и буфера
+Program -> Console : Проигрывание музыки
+loop Игровые сессии
+    Program -> Program : StartGame()
+
+    == Инициализация ==
+    Program -> Console : Clear()
+    Program -> Program : DrawBoard()
+    Program -> Snake : new Snake(x=10, y=5, headColor, bodyColor)
+    Program -> Random : GenFood(snake)
+    Random --> Program : Pixel (еда)
+    Program -> Pixel : Draw()
+
+    == Игровой цикл ==
+    loop пока не Game Over
+        Program -> Stopwatch : Restart()
+        alt ожидание ввода
+            Program -> Direction : ReadMovement(currentDirection)
+            Player -> Console : Нажатие клавиши
+        end
+        Program -> Stopwatch : Restart()
+
+        alt Змейка съела еду
+            Snake -> Snake : Move(direction, eat=true)
+            Program -> Random : GenFood(snake)
+            Random --> Program : Pixel (еда)
+            Program -> Pixel : Draw()
+            Console -> Console : Beep()
+        else
+            Snake -> Snake : Move(direction)
+        end
+
+        alt Столкновение
+            Program -> Snake : Проверка столкновения с границей или телом
+            Program -> Program : Завершение цикла
+        end
+    end
+
+    == Завершение игры ==
+    Snake -> Snake : Clear()
+    Pixel -> Pixel : Clear()
+    Program -> Console : Game Over сообщение
+    Console -> Console : Beep()
+end
+@enduml
